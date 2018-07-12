@@ -16,20 +16,35 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
     private static final String TAG = "FCMMessagingService";
 
+    private static int count = 0;
+
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
         Log.d(TAG, "From: " + remoteMessage.getFrom());
 
+        Log.d(TAG, "Notification data payload: " + remoteMessage.getNotification());
+        // In this case the XMPP Server sends a payload data
+
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
             // In this case the XMPP Server sends a payload data
-            String message = remoteMessage.getData().get("message");
-            Log.d(TAG, "Message received: " + message);
 
-            showBasicNotification(message);
+            if(remoteMessage.getNotification() == null) {
+                if (remoteMessage.getData().containsKey("title")) {
+                    showBasicNotification(remoteMessage.getData().get("message"), remoteMessage.getData().get("title") + "Basic notify");
+                    Log.d(TAG, "Message received: " + remoteMessage.getData().get("message"));
+                } else {
+                    String message = remoteMessage.getData().get("message");
+                    showBasicNotification(message, "Basic Notification");
+                    Log.d(TAG, "Message received: " + message);
+                }
+            } else {
+                Log.i(TAG, "Notification Received : " + remoteMessage.getNotification());
+            }
+
             //showInboxStyleNotification(message);
         }
 
@@ -40,7 +55,19 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
     }
 
-    private void showBasicNotification(String message) {
+    @Override
+    public void onMessageSent(String s) {
+        super.onMessageSent(s);
+        Log.d(TAG, "Message has been sent : " + s);
+    }
+
+    @Override
+    public void onSendError(String s, Exception e) {
+        super.onSendError(s, e);
+        Log.e(TAG, "Could not send message : " + s + " because of " + e);
+    }
+
+    private void showBasicNotification(String message, String title) {
         Intent i = new Intent(this,MainActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
@@ -48,14 +75,14 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setAutoCancel(true)
-                .setContentTitle("Basic Notification")
+                .setContentTitle(title)
                 .setContentText(message)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentIntent(pendingIntent);
 
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-        manager.notify(0,builder.build());
+        manager.notify(++count, builder.build());
 
     }
 

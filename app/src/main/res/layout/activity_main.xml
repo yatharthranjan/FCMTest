@@ -63,4 +63,67 @@
 
         </LinearLayout>
     </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:textStyle="bold"
+            android:text="Send Scheduled Upstream Notifications to yourself!" />
+
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/editTextSchedule"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Write your upstream message"
+                android:minWidth="200dp"
+                android:text=""
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <EditText
+                android:id="@+id/editTextScheduleTimes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Number of times to schedule."
+                android:minWidth="200dp"
+                android:inputType="number"
+                android:text=""
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <EditText
+                android:id="@+id/editTextScheduleInterval"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Interval of the notification"
+                android:inputType="number"
+                android:minWidth="200dp"
+                android:text=""
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+
+            <Button
+                android:id="@+id/buttonUpstreamSchedule"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Schedule" />
+
+
+                <Button
+                    android:id="@+id/buttonUpstreamCancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cancel All" />
+            </LinearLayout>
+    </LinearLayout>
 </LinearLayout>
